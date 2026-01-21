@@ -75,7 +75,7 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
         user_password=hashed_password,
         phone_number=user.phone_number,
         role=user.role,
-        email_verified=False,
+        email_verified=True,  # SET TO TRUE FOR EASIER TESTING - CHANGE TO FALSE IN PRODUCTION
         failed_login_attempts=0,
         registered_at=datetime.now(timezone.utc),
     )
@@ -105,10 +105,10 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
         # Don't fail registration if email fails to send
 
     logger.info(
-        f"User {user.user_email} registered successfully. Email verification required."
+        f"User {user.user_email} registered successfully. Email verification disabled for testing."
     )
     return {
-        "message": "Registration successful. Please check your email to verify your account.",
+        "message": "Registration successful. You can now log in immediately.",
         "email": user.user_email,
     }
 
@@ -175,12 +175,13 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Invalid email or password")
 
     # Check if email is verified
-    if not db_user.email_verified:
-        logger.warning(f"Login attempt for unverified email '{user.user_email}'.")
-        raise HTTPException(
-            status_code=403,
-            detail="Email not verified. Please check your email for verification link.",
-        )
+    # COMMENTED OUT FOR EASIER TESTING - UNCOMMENT IN PRODUCTION
+    # if not db_user.email_verified:
+    #     logger.warning(f"Login attempt for unverified email '{user.user_email}'.")
+    #     raise HTTPException(
+    #         status_code=403,
+    #         detail="Email not verified. Please check your email for verification link.",
+    #     )
 
     # Reset failed login attempts on successful login
     db_user.failed_login_attempts = 0

@@ -201,7 +201,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const responseData = await response.json();
       // Registration no longer returns tokens, only a message and email
-      show('Registration successful! Please check your email to verify your account.', 'success');
+      // Email verification is disabled for testing
+      show('Registration successful! You can now log in immediately.', 'success');
       navigate('/login');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Registration failed. Please try again.';
