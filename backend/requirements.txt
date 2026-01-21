@@ -1,0 +1,17 @@
+# ORM
+sqlalchemy
+alembic
+pymysql
+pydantic
+pydantic[email]
+
+# server
+fastapi
+python-multipart
+uvicorn
+
+# utils
+PyJWT
+passlib
+python-dotenv
+bcrypt==4.0.1
